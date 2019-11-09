@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "firebase": "^7.3.0",
+    "node-pre-gyp": "^0.14.0",
     "node-sass": "^4.12.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
@@ -29,5 +31,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/PeterTong/crwn-clothing.git",
+  "author": "PeterTong <tkwpeter21@gmail.com>",
+  "license": "MIT"
 }
