@@ -5,7 +5,7 @@ import './App.css';
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component'
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 import Header from './components/header/header.component';
 
@@ -22,9 +22,9 @@ class App extends React.Component {
 
 	componentDidMount() {
 		// this method(onAuthStateChanged) is open subscription so we need to close it until we don't need it and save memony
-		this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
+		this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
 			this.setState({ currentUser: user });
-
+			createUserProfileDocument(user);
 			console.log(user);
 		});
 	}
