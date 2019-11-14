@@ -22,11 +22,29 @@ class App extends React.Component {
 
 	componentDidMount() {
 		// this method(onAuthStateChanged) is open subscription so we need to close it until we don't need it and save memony
-		this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
-			this.setState({ currentUser: user });
-			createUserProfileDocument(user);
-			console.log(user);
-		});
+		this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot(snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          }, () => {
+						// console.log(this.state);
+					});
+
+          
+        });
+      }else{
+				// if the user log out set the current user to null
+				this.setState({ currentUser: userAuth });
+			}
+
+      
+    });
 	}
 	
 	componentWillUnmount() {
