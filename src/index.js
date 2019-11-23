@@ -1,14 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+// Provider is a component that we want to wrap around the entire application,
+// so everything can access to this store object 
+import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 
+import store from './redux/store';
 
 ReactDOM.render(
- <BrowserRouter>
+ <Provider store={store}>
+	<BrowserRouter>
 	 <App />
- </BrowserRouter>,
+ </BrowserRouter>
+ </Provider>,
+ 
  
  document.getElementById('root')
 );
