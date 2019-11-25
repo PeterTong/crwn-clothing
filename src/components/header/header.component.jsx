@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// connect is higher component that lets us modify our component to have access to things related to redux
+import { connect } from 'react-redux';
+ 
 import { auth } from '../../firebase/firebase.utils';
 
 // This is a a new special syntax when importing SVG in React. The ReactComponent import name is special and tells Create React App that 
@@ -35,4 +38,13 @@ const Header = ({ currentUser }) => (
 	</div>
 );
 
-export default Header;
+// https://react-redux.js.org/api/connect
+// first argument of connect is mapStateToProps function 
+// if it is specified, the new wrapper component will subscribe to Redux store updates. 
+// This means that any time the store is updated, mapStateToProps will be called.
+
+const mapStateToProps = state => ({
+	// state is root reducer
+	currentUser: state.user.currentUser 
+}); 
+export default connect(mapStateToProps)(Header);

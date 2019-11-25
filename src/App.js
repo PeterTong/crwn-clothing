@@ -1,71 +1,69 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import './App.css';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
+import { connect } from "react-redux";
+import "./App.css";
 
-import HomePage from './pages/homepage/homepage.component';
-import ShopPage from './pages/shop/shop.component';
-import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component'
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import HomePage from "./pages/homepage/homepage.component";
+import ShopPage from "./pages/shop/shop.component";
+import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+import { setCurrentUser } from "./redux/user/user.actions";
 
-import Header from './components/header/header.component';
+import Header from "./components/header/header.component";
 
 class App extends React.Component {
-	constructor(){
-		super();
+  unsubscribeFromAuth = null;
 
-		this.state = {
-			currentUser: null
-		}
-	}
-
-	unsubscribeFromAuth = null;
-
-	componentDidMount() {
-		// this method(onAuthStateChanged) is open subscription so we need to close it until we don't need it and save memony
-		this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+  componentDidMount() {
+		const {setCurrentUser} = this.props;
+    // this method(onAuthStateChanged) is open subscription so we need to close it until we don't need it and save memony
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
-        userRef.onSnapshot(snapShot => {
-          this.setState({
-            currentUser: {
+        userRef.onSnapshot(
+          snapShot => {
+            setCurrentUser({
               id: snapShot.id,
               ...snapShot.data()
-            }
-          }, () => {
-						// console.log(this.state);
-					});
-
-          
-        });
-      }else{
-				// if the user log out set the current user to null
-				this.setState({ currentUser: userAuth });
-			}
-
-      
+            });
+          },
+          () => {
+            // console.log(this.state);
+          }
+        );
+      } else {
+        // if the user log out set the current user to null
+        setCurrentUser(userAuth);
+      }
     });
-	}
-	
-	componentWillUnmount() {
-		// Calling the unsubscribe function when the component is about to unmount is the best way to make sure we don't get any memory leaks in our application 
-		// related to listeners still being open even if the component that cares about the listener is no longer on the page.
-		this.unsubscribeFromAuth();
-	}
+  }
 
-	render() {
-		return (
-			<div>
-				<Header currentUser={this.state.currentUser} />
-				<Switch>
-					<Route exact path='/' component={HomePage}></Route>
-					<Route path='/shop' component={ShopPage}></Route>
-					<Route path='/signin' component={SignInAndSignUpPage}></Route>
-				</Switch>
-			</div>
-		);
-	}
-  
+  componentWillUnmount() {
+    // Calling the unsubscribe function when the component is about to unmount is the best way to make sure we don't get any memory leaks in our application
+    // related to listeners still being open even if the component that cares about the listener is no longer on the page.
+    this.unsubscribeFromAuth();
+  }
+
+  render() {
+    return (
+      <div>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={HomePage}></Route>
+          <Route path="/shop" component={ShopPage}></Route>
+          <Route path="/signin" component={SignInAndSignUpPage}></Route>
+        </Switch>
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  // get the user object
+  // dispatch is mean whatever object you're passing me is going to be
+  // an action object that I am going to pass to every reducer so
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+});
+
+export default connect(null, mapDispatchToProps)(App);
