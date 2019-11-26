@@ -16,7 +16,7 @@ import { ReactComponent as Logo } from '../../assets/crown.svg';
 
 import './header.styles.scss';
 
-const Header = ({ currentUser }) => (
+const Header = ({ currentUser, hidden }) => (
 	<div className='header'>
 		<Link className='logo-container' to='/'>
 			<Logo className='logo' /> 
@@ -38,7 +38,10 @@ const Header = ({ currentUser }) => (
 			}
 			<CartIcon/>
 		</div>
-		<CartDropdown/>
+		{
+			hidden ? null : <CartDropdown/>
+		}
+		
 	</div>
 );
 
@@ -47,8 +50,10 @@ const Header = ({ currentUser }) => (
 // if it is specified, the new wrapper component will subscribe to Redux store updates. 
 // This means that any time the store is updated, mapStateToProps will be called.
 
-const mapStateToProps = state => ({
+// destructure nest value 
+const mapStateToProps = ({user: { currentUser}, cart: { hidden }}) => ({
 	// state is root reducer
-	currentUser: state.user.currentUser 
+	currentUser,
+	hidden
 }); 
 export default connect(mapStateToProps)(Header);
