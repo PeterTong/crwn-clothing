@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
  
 import { auth } from '../../firebase/firebase.utils';
 import CartIcon from '../cart-icon/cart-icon.component';
+import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+
 
 // This is a a new special syntax when importing SVG in React. The ReactComponent import name is special and tells Create React App that 
 // you want a React component that renders an SVG, rather than its filename. https://create-react-app.dev/docs/adding-images-fonts-and-files/
@@ -36,7 +38,7 @@ const Header = ({ currentUser }) => (
 			}
 			<CartIcon/>
 		</div>
-
+		<CartDropdown/>
 	</div>
 );
 
