@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import CustomButton from '../custom-button/custom-button.component';
 import CartItem from '../cart-item/cart-item.component';
@@ -18,10 +19,10 @@ const CartDropdown = ({ cartItems }) => (
   </div>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = createStructuredSelector({
 	// this will make sure that our cart dropdown component 
 	// is not rerenderd when ever the state changes that's unrelated to the card items, this can improve performance 
-  cartItems: selectCartItems(state)
+  cartItems: selectCartItems
 });
 
 export default connect(mapStateToProps)(CartDropdown);

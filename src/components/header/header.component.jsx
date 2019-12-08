@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 
 // connect is higher component that lets us modify our component to have access to things related to redux
 import { connect } from 'react-redux';
- 
+import { createStructuredSelector } from 'reselect';
+
 import { auth } from '../../firebase/firebase.utils';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+import { selectCartHidden} from '../../redux/cart/cart.selectors';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 
 // This is a a new special syntax when importing SVG in React. The ReactComponent import name is special and tells Create React App that 
@@ -51,9 +54,9 @@ const Header = ({ currentUser, hidden }) => (
 // This means that any time the store is updated, mapStateToProps will be called.
 
 // destructure nest value 
-const mapStateToProps = ({user: { currentUser}, cart: { hidden }}) => ({
+const mapStateToProps = createStructuredSelector({
 	// state is root reducer
-	currentUser,
-	hidden
+	currentUser : selectCurrentUser,
+	hidden: selectCartHidden
 }); 
 export default connect(mapStateToProps)(Header);
