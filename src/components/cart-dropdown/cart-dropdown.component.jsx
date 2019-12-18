@@ -6,9 +6,11 @@ import { withRouter } from 'react-router-dom';
 import CustomButton from '../custom-button/custom-button.component';
 import CartItem from '../cart-item/cart-item.component';
 import { selectCartItems } from '../../redux/cart/cart.selectors';
+import { toggleCartHidden } from '../../redux/cart/cart.action';
+
 import './cart-dropdown.styles.scss';
 
-const CartDropdown = ({ cartItems, history }) => (
+const CartDropdown = ({ cartItems, history, dispatch }) => (
   <div className='cart-dropdown'>
     <div className='cart-items'>
       {
@@ -23,7 +25,12 @@ const CartDropdown = ({ cartItems, history }) => (
 				
 			}
     </div>
-    <CustomButton onClick={() => history.push('/checkout')}>
+    <CustomButton onClick={() => {
+			history.push('/checkout')
+			// Hello Kero! So passing down dispatch is a little harder to read because you do have to look around the entire component to see
+			// what kind of actions get dispatched out of the component, whereas with mapDispatchToProps it just makes it easier to read :)
+			dispatch(toggleCartHidden());
+		}}>
 		GO TO CHECKOUT
 		</CustomButton>
   </div>
