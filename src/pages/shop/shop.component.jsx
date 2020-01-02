@@ -11,10 +11,10 @@ const ShopPage = ({ match }) => {
 	console.log(match);
 	return (
   <div className="shop-page">
-		<Route exact path={`${match.path}`} component={CollectionsOverview}> </Route>
+		<Route exact path={`${match.path}`} component={CollectionsOverview} />
 		{/* this allow us to access this categoryId as a parameter on the match object when we are inside of our category */}
 
-		<Route path={`${match.path}/:collectionId`} component={CollectionPage}></Route>
+		<Route path={`${match.path}/:collectionId`} component={CollectionPage} />
   </div>
 )};
 
